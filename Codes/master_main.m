@@ -51,12 +51,12 @@ end
 
 %%
 if Simulation1DataAnal0
-        ExpControlParams.SNR=0; %-9:3:0;
+        ExpControlParams.SNR=-9:3:0;
         ExpControlParams.level=65;
         
-        ExpControlParams.noiseTypes={'SAM'};
+%         ExpControlParams.noiseTypes={'SAM'};
 %         ExpControlParams.noiseTypes={'SSN'};        
-%         ExpControlParams.noiseTypes={'SAM', 'SSN'};
+        ExpControlParams.noiseTypes={'SAM', 'SSN'};
         
         
         ExpControlParams.noisePrefix = cell(1, length(ExpControlParams.noiseTypes));
@@ -64,10 +64,10 @@ if Simulation1DataAnal0
             ExpControlParams.noisePrefix{i} = ['noise' filesep lower(ExpControlParams.noiseTypes{i}) '_simulation_dtu'];
         end
         
-        ExpControlParams.fiberType=2; %1:3; % L/M/H <--> 1/2/3
-        ExpControlParams.CF=1e3; %logspace(log10(125), log10(8e3), 21);
+        ExpControlParams.fiberType=1:3; % L/M/H <--> 1/2/3
+        ExpControlParams.CF=logspace(log10(125), log10(8e3), 21);
         ExpControlParams.species=2;    % 1 for cat (2 for human with Shera et al. tuning; 3 for human with Glasberg & Moore tuning)
-        ExpControlParams.sentences=6; %1:10;
+        ExpControlParams.sentences=1:10;
        ExpControlParams.ohcLoss_dB=0;
        ExpControlParams.ihcLoss_dB=0;
      
