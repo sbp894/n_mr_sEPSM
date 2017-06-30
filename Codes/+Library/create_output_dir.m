@@ -13,23 +13,19 @@ allfiles=allfiles([allfiles(:).isdir]);
 
 numDIR=0;
 for i=1:length(allfiles)
-    if strfind(allfiles(i).name,resultDirName)
-        numDIR=numDIR+1;
-    end
+   if strfind(allfiles(i).name,resultDirName)
+       numDIR=numDIR+1;
+   end
 end
 numDIR=max(numDIR,1);
 
-root_dir=[RootOUTPUTDir SwitchDir filesep resultDirName '-' num2str(numDIR) filesep];
+root_dir=[RootOUTPUTDir SwitchDir filesep resultDirName '-' num2str(numDIR) filesep]; 
 
 if exist(root_dir,'dir')
-    %     if 1
-    %         choice = questdlg(sprintf('The result directory- (%s) exists for this data. What should be done?', root_dir),'Already Analyzed Data', 'Create_new_directory','Resume','Replace','Resume');
-    %     else
-    choice= 'Resume';
-    %     end
+    choice = questdlg(sprintf('The result directory- (%s) exists for this data. What should be done?', root_dir),'Already Analyzed Data', 'Create_new_directory','Resume','Replace','Resume');
     switch choice
         case 'Create_new_directory'
-            root_dir=[RootOUTPUTDir SwitchDir filesep resultDirName '-' num2str(numDIR+1) filesep];
+                root_dir=[RootOUTPUTDir SwitchDir filesep resultDirName '-' num2str(numDIR+1) filesep];
         case 'Resume'
             % Resumed
         case 'Replace'
@@ -55,7 +51,4 @@ end
 
 if ~exist([root_dir 'progress'],'dir')
     mkdir([root_dir 'progress']);
-end
-if ~exist([root_dir 'current'],'dir')
-    mkdir([root_dir 'current']);
 end

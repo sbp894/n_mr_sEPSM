@@ -1,5 +1,10 @@
-function [A,B]=get_speech_params(Fs, ExpControlParams)
+function [A,B]=get_speech_params(ExpControlParams)
 
+if nargin==0
+   ExpControlParams=[]; 
+end
+
+fs=ExpControlParams.fs;
 if isempty(ExpControlParams)
     A.level = 50; %dB SPL according to email from Varsha
     B.SNR = [-6 0 6];
@@ -19,7 +24,7 @@ A.path = ['stimuli' filesep];
 A.fileExtension = '.wav';
 A.prefix = ['quiet' filesep 'dan_sent'];
 A.numberOfSentences = length(A.sentences);
-A.Fs = Fs;
+A.fs = fs;
 
 
 %% %%%%%%%%%%%%%%%%%%%%%%%%% Stimulus B (noise) %%%%%%%%%%%%%%%%%%%%%
@@ -40,4 +45,4 @@ B.fileExtension = '.wav';
 B.prefix = ['speechInNoise' filesep 'speechInNoise'];
 B.numberOfSentences = A.numberOfSentences;
 B.level = A.level; %dB SPL according to email from Varsha
-B.fs = Fs;
+B.fs = fs;

@@ -1,5 +1,4 @@
-function [SACSCCfunctions,SACSCCmetrics,paramsOUT] = ...
-    SACSCCanal_SNRenv_parallel(SpikeTrains,paramsIN,PLOT_15panel,resultsDir,resultPostfix,BootstrapLoopMax, winCorr0Add1Mul)
+function [SACSCCfunctions,SACSCCmetrics,paramsOUT] = SACSCCanal_SNRenv_parallel(SpikeTrains,paramsIN,PLOT_15panel,resultsDir,resultPostfix,BootstrapLoopMax, winCorr0Add1Mul)
 % File: CCCanal.m
 % M. Heinz/ J. Swaminathan
 % May 20, 2008
@@ -217,7 +216,7 @@ for BOOTrep=1:BootstrapLoopMax
     
     if min([NumDrivenSpikes11,NumDrivenSpikes12,NumDrivenSpikes21,NumDrivenSpikes22,NumDrivenSpikes31,NumDrivenSpikes32])>paramsOUT.MINspikes
         
-        [SACSCCs,AvgRate_sps]=SACSCCanal(ST_A_plus,ST_A_minus,ST_B_plus,ST_B_minus,ST_C_plus,ST_C_minus,paramsOUT, winCorr0Add1Mul);
+        [SACSCCs,AvgRate_sps]=Library.SACSCCanal(ST_A_plus,ST_A_minus,ST_B_plus,ST_B_minus,ST_C_plus,ST_C_minus,paramsOUT, winCorr0Add1Mul);
         %%% OK to HERE - going NOW to SACSCCanal
         
         % 		if ~isnan(NumDrivenSpikes21)
@@ -230,7 +229,7 @@ for BOOTrep=1:BootstrapLoopMax
         STrand_C_minus=Library.randomizeSTs(ST_C_minus,paramsOUT.curBoundaries(1),paramsOUT.curBoundaries(2));
         
 %         fprintf('   ... Computing SACs/SCCs for RANDOM spikes (for Noise Floor) ...\n');
-        [SACSCCs_rand,~]=SACSCCanal(STrand_A_plus,STrand_A_minus,STrand_B_plus,STrand_B_minus,STrand_C_plus,STrand_C_minus,paramsOUT, winCorr0Add1Mul);
+        [SACSCCs_rand,~]=Library.SACSCCanal(STrand_A_plus,STrand_A_minus,STrand_B_plus,STrand_B_minus,STrand_C_plus,STrand_C_minus,paramsOUT, winCorr0Add1Mul);
         
         
         %% PSD/CSD summations - Compute summed energy in ENVELOPE spectral (densities over various frequency ranges)
@@ -618,7 +617,7 @@ SACSCCfunctions=SACSCCfunctions(~cellfun('isempty',SACSCCfunctions));
 SACSCCmetrics=SACSCCmetrics(~cellfun('isempty',SACSCCmetrics));
 
 if ~isempty(SACSCCfunctions)
-    [SACSCCfunctions,SACSCCmetrics,paramsOUT]=last_loop_SACSCCanal(SACSCCfunctions,SACSCCmetrics,paramsOUT);
+    [SACSCCfunctions,SACSCCmetrics,paramsOUT]=Library.last_loop_SACSCCanal(SACSCCfunctions,SACSCCmetrics,paramsOUT);
 end
 
 if PLOT_15panel

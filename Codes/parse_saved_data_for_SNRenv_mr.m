@@ -77,7 +77,7 @@ if 1
 %                             paramsIN=paramsIN.paramsIN;
                             
                             
-                            [pModSN, pModN, SNRenv]=mrSNRenvAnalysis(PowerModCell, CompareWithNF, NumSTDsNFtol);
+                            [pModSN, pModN, SNRenv]=Library.mrSNRenvAnalysis(PowerModCell, CompareWithNF, NumSTDsNFtol);
                             
                             SimData(ntypeVar, levelVar, snrVar, sentVar, cfVar, ftypeVar).PowerModSN = pModSN;
                             SimData(ntypeVar, levelVar, snrVar, sentVar, cfVar, ftypeVar).PowerModN = pModN;

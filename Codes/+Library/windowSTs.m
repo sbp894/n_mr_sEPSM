@@ -6,7 +6,9 @@ function [SpikeTrain_new,Nspikes,nLines]=windowSTs(SpikeTrain_old,start_sec,end_
 SpikeTrain_old=SpikeTrain_old(~cellfun('isempty',SpikeTrain_old));
 
 if isempty(SpikeTrain_old)
-    Nspikes=0; SpikeTrain_new={}; nLines=0;
+    Nspikes=0; 
+    SpikeTrain_new={}; 
+    nLines=0;
 else
     Nspikes=0;
     SpikeTrain_new=cell(size(SpikeTrain_old));
@@ -16,7 +18,6 @@ else
             if (Nspikes+length(spikeINDs))<=MAXspikes
                 Nspikes=Nspikes+length(spikeINDs);
                 SpikeTrain_new{i} = SpikeTrain_old{i}(spikeINDs);
-                nLines=i;
             else
                 break
             end
@@ -24,6 +25,7 @@ else
     end
     
     SpikeTrain_new=SpikeTrain_new(~cellfun('isempty',SpikeTrain_new));
+    nLines=length(SpikeTrain_new);
 end
 
 return;

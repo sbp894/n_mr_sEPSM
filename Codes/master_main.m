@@ -13,20 +13,7 @@
 function master_main(varargin)
 clear all; %#ok<CLALL>
 
-% global RootDataDir RootOUTPUTDir RootCodesDir ExpControlParams paramsIfCallingFromOutside
-
-RootCodesDir= [pwd filesep];
 RootDataDir=[fileparts(pwd) filesep 'MATData' filesep];
-RootOUTPUTDir=[pwd filesep 'OUTPUT' filesep];
-
-% global figHandles
-% figHandles.PSDplot=11;
-% figHandles.SACSCC=2;
-% figHandles.meanRates=1;
-% figHandles.modPPlots=13;
-
-
-cd(RootCodesDir);
 
 if nargin==0
     Simulation1DataAnal0=1;
@@ -50,55 +37,21 @@ else
 end
 
 %%
-if Simulation1DataAnal0
-        ExpControlParams.SNR=-9:3:0;
-        ExpControlParams.level=65;
-        
-%         ExpControlParams.noiseTypes={'SAM'};
-%         ExpControlParams.noiseTypes={'SSN'};        
-        ExpControlParams.noiseTypes={'SAM', 'SSN'};
-        
-        
-        ExpControlParams.noisePrefix = cell(1, length(ExpControlParams.noiseTypes));
-        for i=1:length(ExpControlParams.noiseTypes)
-            ExpControlParams.noisePrefix{i} = ['noise' filesep lower(ExpControlParams.noiseTypes{i}) '_simulation_dtu'];
-        end
-        
-        ExpControlParams.fiberType=1:3; % L/M/H <--> 1/2/3
-        ExpControlParams.CF=logspace(log10(125), log10(8e3), 21);
-        ExpControlParams.species=2;    % 1 for cat (2 for human with Shera et al. tuning; 3 for human with Glasberg & Moore tuning)
-        ExpControlParams.sentences=1:10;
-       ExpControlParams.ohcLoss_dB=0;
-       ExpControlParams.ihcLoss_dB=0;
-     
-        ExpControlParams.nRep=60;
-        ExpControlParams.BootstrapLoopMax=24;
-        ExpControlParams.BootstrapLoopReport=60;
-        ExpControlParams.nPSDs2Avg=12;
-        ExpControlParams.fixSPL=0;
-        ExpControlParams.winCorr0Add1Mul=1;
-        ExpControlParams.modFreqs=[1 2 4 8 16 32 64];
-        ExpControlParams.mrWindows=2.^10./ExpControlParams.modFreqs*1e-3;
-else
-    clear global ExpControlParams;
-end
+RootOUTPUTDir=[pwd filesep 'OUTPUT' filesep];
+figHandles=Library.get_figHandles;
 
-%%
 if Simulation1DataAnal0 % Simulate
-    [resultsDir,resultTxt]=Analyze_Sim(ExpControlParams, RootOUTPUTDir);
+    ExpControlParams=Simulation.get_ExpControlParams;
+    [resultsDir,resultTxt]=Simulation.Analyze_Sim(ExpControlParams, RootOUTPUTDir, figHandles);
     save([resultsDir 'ExpControlParams.mat'],'ExpControlParams');
 else
-    [resultsDir,resultTxt]=Analyze_Data(DataDir);
+    [resultsDir,resultTxt]=DataAnal.Analyze_Data(DataDir);
 end
 
-% parse_saved_data_for_SNRenv2(resultsDir,resultTxt);
-if ~strcmp(resultsDir(end),filesep)
-    resultsDir=[resultsDir filesep];
-end
 
-% parse_saved_data_for_SNRenvDTU;
-% parse_saved_data_for_SNRenvDTU(resultsDir,resultTxt);
-% parse_saved_data_for_SNRenv_mr(resultsDir,resultTxt);
+
+
+parse_saved_data_for_SNRenv_mr(resultsDir,resultTxt);
 if exist('ChinID','var')
     %     create_summary(ChinID);
     % %     plot_summary(ChinID);

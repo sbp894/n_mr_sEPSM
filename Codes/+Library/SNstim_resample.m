@@ -15,22 +15,22 @@ verbose = anal.verbose;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% AN-model Stimuli generation
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-[stimVEC_S, FsS_Hz] = audioread(stim_S_Fname);
-[stimVEC_N, FsN_Hz] = audioread(stim_N_Fname);
-ind2flip=round(anal.onsetIgnore*FsS_Hz);
+[stimVEC_S, fsS_Hz] = audioread(stim_S_Fname);
+[stimVEC_N, fsN_Hz] = audioread(stim_N_Fname);
+ind2flip=round(anal.onsetIgnore*fsS_Hz);
 stimVEC_S=[stimVEC_S(ind2flip:-1:1); stimVEC_S];
 stimVEC_N=[stimVEC_N(ind2flip:-1:1); stimVEC_N];
 
 %%%%%%%%%%%
-%% RESAMPLE StimVEC_S to ANmodel_Fs_Hz, with original as Fs_Hz
-ANmodel_Fs_Hz=A.Fs;
+%% RESAMPLE StimVEC_S to ANmodel_fs_Hz, with original as fs_Hz
+ANmodel_fs_Hz=A.fs;
 if verbose
-    fprintf('... resampling stimVEC_S (%s) from %.f Hz to %.f Hz',stim_S_Fname,FsS_Hz,ANmodel_Fs_Hz);
+    fprintf('... resampling stimVEC_S (%s) from %.f Hz to %.f Hz',stim_S_Fname,fsS_Hz,ANmodel_fs_Hz);
 end
 
 dBSPL_S_before=20*log10(sqrt(mean(stimVEC_S.^2))/(20e-6));
-sfreq=FsS_Hz;	   
-sfreqNEW=ANmodel_Fs_Hz;
+sfreq=fsS_Hz;	   
+sfreqNEW=ANmodel_fs_Hz;
 
 P=round(sfreqNEW/10); 
 Q=round(sfreq/10);  %Integers used to up sample
@@ -48,14 +48,14 @@ end
 
 
 %%%%%%%%%%%
-%% RESAMPLE StimVEC_N to ANmodel_Fs_Hz, with original as Fs_Hz
+%% RESAMPLE StimVEC_N to ANmodel_fs_Hz, with original as fs_Hz
 if verbose
-    fprintf('... resampling stimVEC_N (%s) from %.f Hz to %.f Hz',stim_N_Fname,FsN_Hz,ANmodel_Fs_Hz);
+    fprintf('... resampling stimVEC_N (%s) from %.f Hz to %.f Hz',stim_N_Fname,fsN_Hz,ANmodel_fs_Hz);
 end
 dBSPL_N_before=20*log10(sqrt(mean(stimVEC_N.^2))/(20e-6));
 
-sfreq=FsN_Hz;	  
-sfreqNEW=ANmodel_Fs_Hz;
+sfreq=fsN_Hz;	  
+sfreqNEW=ANmodel_fs_Hz;
 P=round(sfreqNEW/10); 
 Q=round(sfreq/10);  %Integers used to up sample
 if(P/Q*sfreq~=sfreqNEW && verbose) 
@@ -70,7 +70,7 @@ if abs(dBSPL_N_before-dBSPL_N_after)>0.2;
 end
 
 % Adjust the length of the noise file. It should start 1 sec. before the speech signal
-% and end 0.6 sec. after; this equals 1.6 x Fs samples. Start with
+% and end 0.6 sec. after; this equals 1.6 x fs samples. Start with
 % a random sample:
 
 % startSampleMax = length(stimVEC_N_model) - length(stimVEC_S_model);

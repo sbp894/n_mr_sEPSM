@@ -21,7 +21,7 @@ SpikeMAT1=NaN*ones(NUMspikeREPS,Kmax);
 for REPindREF=1:NUMspikeREPS
    SpikeMAT1(REPindREF,1:length(SpikeTrain1{REPindREF}))=SpikeTrain1{REPindREF};
 end
-NUMspikes=sum(~isnan(SpikeMAT1(:,:))',1)';  % Count number of real spikes in each line
+NUMspikes=sum(~isnan(SpikeMAT1(:,:))',1);  % Count number of real spikes in each line
 TOTALspikes=sum(NUMspikes);
 AVGrate=TOTALspikes/NUMspikeREPS/Duration;
 
@@ -32,13 +32,9 @@ AVGrate=TOTALspikes/NUMspikeREPS/Duration;
 %
 % 27Sep04: ??? Can we speed this up eventually by not loading a full matrix (Kmax), but use 1-D vector and NumSpikes?
 %
-[intsMEX,TOTALints] = Library.InnerSACmex(SpikeMAT1',NUMspikes,TOTALspikes); 
-% fprintf('%i/%i\n', length(intsMEX), TOTALints);
-ints=intsMEX(1:min(TOTALints,length(intsMEX))); % Remove extra ints due to NaN's ini SpikeMAT1 matrix
 
-if TOTALints>length(intsMEX)
-    warning('something is wrong in ShufAutoCorr\n');
-end
+[intsMEX,TOTALints] = Library.InnerSACmex(SpikeMAT1',NUMspikes,TOTALspikes); 
+ints=intsMEX(1:TOTALints);  % Remove extra ints due to NaN's ini SpikeMAT1 matrix
 clear intsMEX
 ints=ints(~isnan(ints))/1e-6;  % Convert into micro-seconds
 

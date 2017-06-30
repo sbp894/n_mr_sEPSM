@@ -91,7 +91,7 @@ parfor unit_var=1:length(unitFiles)
                 rates(line_var)=length(spkCurLine)/(data.Hardware.Trigger.StmOn/1e3);
             end
         end
-        [RLVparams,~,~]=fitRLfun(dBs2run,rates,PlotRLV,plotFittedRLV);
+        [RLVparams,~,~]=NELfuns.fitRLfun(dBs2run,rates,PlotRLV,plotFittedRLV);
         CF_SR_SAT_Q10_3(unit_var)=RLVparams.R_Sat;
         %         pause;
         %         clf;
@@ -106,10 +106,10 @@ parfor unit_var=1:length(unitFiles)
         TCdata=TCdata.data.TcData;
         TCdata=TCdata(TCdata(:,1)~=0,:); % Get rid of all 0 freqs
         for i=1:size(TCdata,1)
-            TCdata(i,3)=CalibInterp(TCdata(i,1),CalibData)-TCdata(i,2);
+            TCdata(i,3)=NELfuns.CalibInterp(TCdata(i,1),CalibData)-TCdata(i,2);
         end
-        TCdata(:,4)=trifilt(TCdata(:,3)',TFiltWidthTC)';
-        [CF_SR_SAT_Q10_4(unit_var),~,~,~] = findQ10(TCdata(:,1),TCdata(:,4),CF_SR_SAT_Q10_1(unit_var));
+        TCdata(:,4)=Library.trifilt(TCdata(:,3)',TFiltWidthTC)';
+        [CF_SR_SAT_Q10_4(unit_var),~,~,~] = NELfuns.findQ10(TCdata(:,1),TCdata(:,4),CF_SR_SAT_Q10_1(unit_var));
     else
         CF_SR_SAT_Q10_4(unit_var)=nan;
     end
@@ -212,7 +212,7 @@ for file_var=1:size(SummaryVar,1)
     SummaryVar(file_var).spkRateSN=spkRateSN/length(temp_params);
     SummaryVar(file_var).spkRateN=spkRateN/length(temp_params);
 end
-SummaryVar=get_revcor(SpikeStimulusData,SummaryVar);
+SummaryVar=NELfuns.get_revcor(SpikeStimulusData,SummaryVar);
 
 save([DataDir 'SummaryVar.mat'], 'SummaryVar');
 

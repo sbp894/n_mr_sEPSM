@@ -20,7 +20,7 @@ for windowVar=1:length(mrWindows)
         tempCellSpk=cell(size(SpikeTrains));
         for rowVar=1:size(SpikeTrains,1)
             for colVar=1:size(SpikeTrains,2)
-                tempCellSpk{rowVar, colVar}=cellfun(@(x) mrWindowSpktimes(x,onsetIgnore+(curLoop-1)*curWindow, onsetIgnore+curLoop*curWindow), SpikeTrains{rowVar, colVar}, 'Un', 0);
+                tempCellSpk{rowVar, colVar}=cellfun(@(x) Library.mrWindowSpktimes(x,onsetIgnore+(curLoop-1)*curWindow, onsetIgnore+curLoop*curWindow), SpikeTrains{rowVar, colVar}, 'Un', 0);
             end
         end
         curCellSpk{curLoop}=tempCellSpk;

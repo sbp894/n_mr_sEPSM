@@ -43,13 +43,13 @@ function [Cohc,Cihc,OHC_Loss]=fitaudiogram2(FREQUENCIES,dBLoss,species,Dsd_OHC_L
 switch species
     case 1
 %         disp('Analyzing audiogram for cat AN model')
-        load THRESHOLD_ALL_CAT;
+        load +Library\THRESHOLD_ALL_CAT;
     case 2
 %         disp('Analyzing audiogram for human AN model - BM tuning from Shera et al. (2002)')
-        load THRESHOLD_ALL_HM_Shera;
+        load +Library\THRESHOLD_ALL_HM_Shera;
     case 3
 %         disp('Analyzing audiogram for human AN model - BM tuning from Glasberg & Moore (1990)')
-        load THRESHOLD_ALL_HM_GM;
+        load +Library\THRESHOLD_ALL_HM_GM;
     otherwise
         error(['Species # ' int2str(species) ' not known'])
 end
@@ -59,13 +59,18 @@ end
 % CIHC: varies from 1.0 to 0.0001        [1*55]
 % COHC: varies from 1.0 to 0             [1*56]
 % THR : absolute thresholds              [37*55*56]
-
+dBShift=0*THR;
 for k = 1:length(THR(:,1,1))
     dBShift(k,:,:)= THR(k,:,:) - THR(k,1,1);
 end
 
 if nargin<4, Dsd_OHC_Loss = 2/3*dBLoss;
 end;
+
+Cohc=ones(length(FREQUENCIES), 1);
+Cihc=ones(length(FREQUENCIES), 1);
+OHC_Loss=zeros(length(FREQUENCIES), 1);
+Loss_IHC=zeros(length(FREQUENCIES), 1);
 
 for m = 1:length(FREQUENCIES)
     [W,N] = min(abs(CF-FREQUENCIES(m))); n = N(1);

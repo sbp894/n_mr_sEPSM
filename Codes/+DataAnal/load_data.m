@@ -88,7 +88,7 @@ for file_var=1:length(allfiles)
     
     for snr_var=1:length(SNRs_for_current_unit)
         Ncases=Ncases+1;
-        [spike_data(end+1).SpikeTrains,StimData{end+1},StimsFNames{end+1}]=get_SpikeTrains(PicData,stim_list,TypeSNRpolarityMat,SNRs_for_current_unit(snr_var));
+        [spike_data(end+1).SpikeTrains,StimData{end+1},StimsFNames{end+1}]=DataAnal.get_SpikeTrains(PicData,stim_list,TypeSNRpolarityMat,SNRs_for_current_unit(snr_var));
         spike_data(end).nReps=mean(mean(cellfun(@(x) numel(x),spike_data(end).SpikeTrains)));
         spike_data(end).CF=csCell(Ncases,1);
         spike_data(end).SNR=csCell(Ncases,2);

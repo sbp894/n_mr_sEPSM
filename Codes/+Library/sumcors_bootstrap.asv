@@ -82,12 +82,12 @@ if ~isempty(SACSCCfunctions)
     end
     % Divide the FFT output into modulation filters
     ModFreqs = anal.ModFreqs;
-    PowerModS = zeros(anal.BootstrapLoopReport,length(ModFreqs));
-    PowerModN = zeros(anal.BootstrapLoopReport,length(ModFreqs));
-    PowerModSN = zeros(anal.BootstrapLoopReport,length(ModFreqs));
-    PowerModS_noisefloor = zeros(anal.BootstrapLoopReport,length(ModFreqs));
-    PowerModN_noisefloor = zeros(anal.BootstrapLoopReport,length(ModFreqs));
-    PowerModSN_noisefloor = zeros(anal.BootstrapLoopReport,length(ModFreqs));
+    PowerModS = zeros(BootstrapLoopReport,length(ModFreqs));
+    PowerModN = zeros(BootstrapLoopReport,length(ModFreqs));
+    PowerModSN = zeros(BootstrapLoopReport,length(ModFreqs));
+    PowerModS_noisefloor = zeros(BootstrapLoopReport,length(ModFreqs));
+    PowerModN_noisefloor = zeros(BootstrapLoopReport,length(ModFreqs));
+    PowerModSN_noisefloor = zeros(BootstrapLoopReport,length(ModFreqs));
     
     %% Look at RAND PSDs as well to get noise floor.
     plt =0;
@@ -95,7 +95,7 @@ if ~isempty(SACSCCfunctions)
     PSDsize=size(SACSCCfunctions{1}.PSDenv_A);
     for bs_var=1:anal.BootstrapLoopReport
         
-        ind=randsample(1:BootstrapLoopMax, nPSDs2Avg);
+        ind=randsample(1:anal.BootstrapLoopMax, nPSDs2Avg);
         PSDenv_A=zeros(PSDsize);
         PSDenv_B=zeros(PSDsize);
         PSDenv_C=zeros(PSDsize);
@@ -194,8 +194,8 @@ if ~isempty(SACSCCfunctions)
     PowerMod_STRUCT.PowerModN_noisefloor=PowerModN_noisefloor;
     PowerMod_STRUCT.PowerModSN_noisefloor=PowerModSN_noisefloor;
     
-    params=repmat(struct([]),BootstrapLoopMax,1);
-    for i=1:BootstrapLoopMax
+    params=repmat(struct([]),anal.BootstrapLoopMax,1);
+    for i=1:anal.BootstrapLoopMax
         params(i).nLines=SACSCCmetrics{i,1}.nLines;
         params(i).NumDrivenSpikes=SACSCCmetrics{i,1}.NumDrivenSpikes;
         params(i).AvgRate_sps=SACSCCmetrics{i,1}.AvgRate_sps;
